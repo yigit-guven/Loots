@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:item/bundle",
+    "textures": {
+        "layer0": "loots:item/rare_loot_bundle"
+    }
+}

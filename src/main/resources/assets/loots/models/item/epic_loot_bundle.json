@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:item/bundle",
+    "textures": {
+        "layer0": "loots:item/epic_loot_bundle"
+    }
+}

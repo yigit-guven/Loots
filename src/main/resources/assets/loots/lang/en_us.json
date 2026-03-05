@@ -1,0 +1,18 @@
+{
+  "itemGroup.loots": "Loots",
+  "block.loots.example_block": "Example Block",
+  "item.loots.example_item": "Example Item",
+  "item.loots.common_loot_bundle": "Common Loot Bundle",
+  "item.loots.rare_loot_bundle": "Rare Loot Bundle",
+  "item.loots.epic_loot_bundle": "Epic Loot Bundle",
+  "item.loots.legendary_loot_bundle": "Legendary Loot Bundle",
+  "tooltip.loots.rarity": "Rarity",
+  "tooltip.loots.take_only": "Take-only: Contents cannot be added to",
+  "loots.configuration.title": "Loots Configs",
+  "loots.configuration.section.loots.common.toml": "Loots Configs",
+  "loots.configuration.section.loots.common.toml.title": "Loots Configs",
+  "loots.configuration.items": "Item List",
+  "loots.configuration.logDirtBlock": "Log Dirt Block",
+  "loots.configuration.magicNumberIntroduction": "Magic Number Text",
+  "loots.configuration.magicNumber": "Magic Number"
+}

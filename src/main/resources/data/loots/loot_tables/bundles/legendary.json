@@ -1,0 +1,33 @@
+{
+    "type": "minecraft:loot_pool",
+    "pools": [
+        {
+            "rolls": {
+                "min": 5,
+                "max": 8
+            },
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:netherite_ingot",
+                    "weight": 5
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:netherite_block",
+                    "weight": 1
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:totem_of_undying",
+                    "weight": 5
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:elytra",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}

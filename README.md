@@ -1,4 +1,4 @@
-![Loots Banner](src\main\resources\logo.png)
+![Loots Banner](src/main/resources/logo.png)
 
 **Loots** is a Minecraft mod that adds mystery loot bundles (pouches) which drop from hostile mobs. These bundles come in four rarities and feature randomized item placement for a more authentic looting experience.
 

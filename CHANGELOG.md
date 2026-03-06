@@ -1,0 +1,7 @@
+- Initial project setup and NeoForge mod structure.
+- Loot Bundle system: including custom menus, screens (3x9 slots), and data handling.
+- Configurable loot tables with support for various rarity levels and loot types.
+- Mod metadata including local logo, display name, and GPL-3.0-only license.
+- Comprehensive README documentation with usage instructions and visual assets.
+- Robust logging for loot loading and table processing tasks.
+- Enhanced UI layout and alignment for various screen components.

@@ -64,6 +64,13 @@ public class Loots {
     // registered under the "loots" namespace
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister
             .create(Registries.CREATIVE_MODE_TAB, MODID);
+    // Create a Deferred Register for MenuTypes
+    public static final DeferredRegister<net.minecraft.world.inventory.MenuType<?>> MENU_TYPES = DeferredRegister
+            .create(Registries.MENU, MODID);
+
+    public static final DeferredHolder<net.minecraft.world.inventory.MenuType<?>, net.minecraft.world.inventory.MenuType<LootBundleMenu>> LOOT_BUNDLE_MENU = MENU_TYPES
+            .register("loot_bundle",
+                    () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(LootBundleMenu::new));
 
     // Creates a new Block with the id "loots:example_block", combining the
     // namespace and path
@@ -120,6 +127,8 @@ public class Loots {
         ITEMS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
+        // Register MenuTypes
+        MENU_TYPES.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Loots) to
@@ -211,9 +220,6 @@ public class Loots {
                 selectedRarity = LootRarity.COMMON;
         } else {
             // Low Tier (Zombie, Skeleton etc)
-            // 10% base drop chance for Common
-            // 1% for Rare
-            // 0.1% for Epic
             if (roll < 0.001f)
                 selectedRarity = LootRarity.EPIC;
             else if (roll < 0.01f)
@@ -233,24 +239,29 @@ public class Loots {
         };
 
         ItemStack bundleStack = new ItemStack(bundleItem.get());
-
         ServerLevel serverLevel = (ServerLevel) level;
-        LootTable lootTable = serverLevel.getServer().reloadableRegistries().getLootTable(
-                ResourceKey.create(Registries.LOOT_TABLE, selectedRarity.getLootTable()));
 
-        LootParams params = new LootParams.Builder(serverLevel)
-                .withParameter(LootContextParams.THIS_ENTITY, event.getEntity())
-                .withParameter(LootContextParams.ORIGIN, event.getEntity().position())
-                .withParameter(LootContextParams.DAMAGE_SOURCE, event.getSource())
-                .withOptionalParameter(LootContextParams.ATTACKING_ENTITY, player)
-                .create(LootContextParamSets.ENTITY);
-
-        List<ItemStack> loot = lootTable.getRandomItems(params);
+        List<ItemStack> loot = generateLoot(serverLevel, selectedRarity, event.getEntity(), event.getSource(), player);
         if (!loot.isEmpty()) {
             bundleStack.set(DataComponents.BUNDLE_CONTENTS, new BundleContents(loot));
-
             event.getDrops().add(new ItemEntity(level,
                     event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), bundleStack));
         }
+    }
+
+    public static List<ItemStack> generateLoot(ServerLevel level, LootRarity rarity,
+            net.minecraft.world.entity.LivingEntity entity, net.minecraft.world.damagesource.DamageSource source,
+            Player player) {
+        LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(
+                ResourceKey.create(Registries.LOOT_TABLE, rarity.getLootTable()));
+
+        LootParams params = new LootParams.Builder(level)
+                .withParameter(LootContextParams.THIS_ENTITY, entity)
+                .withParameter(LootContextParams.ORIGIN, entity.position())
+                .withParameter(LootContextParams.DAMAGE_SOURCE, source)
+                .withOptionalParameter(LootContextParams.ATTACKING_ENTITY, player)
+                .create(LootContextParamSets.ENTITY);
+
+        return lootTable.getRandomItems(params);
     }
 }

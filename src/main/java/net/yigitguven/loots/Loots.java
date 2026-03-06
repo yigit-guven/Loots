@@ -196,36 +196,33 @@ public class Loots {
         // Calculate probabilities based on Max Health
         if (maxHealth >= 300) {
             // High Tier (Bosses e.g. Warden/Wither)
-            if (roll < 0.99f)
-                selectedRarity = LootRarity.LEGENDARY;
-            else
-                selectedRarity = LootRarity.EPIC;
+            selectedRarity = roll < 0.95f ? LootRarity.LEGENDARY : LootRarity.EPIC;
         } else if (maxHealth >= 100) {
             // Mid-High Tier (Elder Guardian, Ravager etc)
-            if (roll < 0.10f)
+            if (roll < 0.20f)
                 selectedRarity = LootRarity.LEGENDARY;
-            else if (roll < 0.40f)
+            else if (roll < 0.50f)
                 selectedRarity = LootRarity.EPIC;
-            else if (roll < 0.80f)
+            else if (roll < 0.85f)
                 selectedRarity = LootRarity.RARE;
             else
                 selectedRarity = LootRarity.COMMON;
         } else if (maxHealth >= 50) {
             // Mid Tier
-            if (roll < 0.05f)
+            if (roll < 0.10f)
                 selectedRarity = LootRarity.EPIC;
-            else if (roll < 0.20f)
+            else if (roll < 0.30f)
                 selectedRarity = LootRarity.RARE;
-            else if (roll < 0.60f)
-                selectedRarity = LootRarity.COMMON;
+            else
+                selectedRarity = LootRarity.COMMON; // 70% chance for common here, roughly
         } else {
             // Low Tier (Zombie, Skeleton etc)
-            if (roll < 0.001f)
+            if (roll < 0.01f)
                 selectedRarity = LootRarity.EPIC;
-            else if (roll < 0.01f)
+            else if (roll < 0.05f)
                 selectedRarity = LootRarity.RARE;
-            else if (roll < 0.11f)
-                selectedRarity = LootRarity.COMMON;
+            else if (roll < 0.25f)
+                selectedRarity = LootRarity.COMMON; // Increased from 10% to 20% total for common
         }
 
         if (selectedRarity == null)

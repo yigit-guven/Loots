@@ -67,7 +67,7 @@ public class LootBundleMenu extends AbstractContainerMenu {
 
         // Add bundle slots (Take-only)
         for (int i = 0; i < 9; i++) {
-            this.addSlot(new Slot(container, i, 8 + i * 18, 20) {
+            this.addSlot(new Slot(container, i, 8 + i * 18, 18) {
                 @Override
                 public boolean mayPlace(ItemStack stack) {
                     return false; // TAKE ONLY
@@ -78,13 +78,13 @@ public class LootBundleMenu extends AbstractContainerMenu {
         // Add player inventory
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 51 + row * 18));
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 50 + row * 18));
             }
         }
 
         // Add player hotbar
         for (int col = 0; col < 9; col++) {
-            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 109));
+            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 108));
         }
     }
 

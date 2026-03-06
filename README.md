@@ -1,25 +1,30 @@
+# Loots
 
-Installation information
-=======
+![Loots Banner](https://raw.githubusercontent.com/yigit-guven/Loots/main/logo.png) (Replace with actual logo if available)
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+**Loots** is a Minecraft mod that adds mystery loot bundles (pouches) which drop from hostile mobs. These bundles come in four rarities and feature randomized item placement for a more authentic looting experience.
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+## Features
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+- **Mystery Pouches**: Four tiers of loot: **Common**, **Rare**, **Epic**, and **Legendary**.
+- **Mob Drops**: Hostile mobs have a chance to drop these bundles upon death. Higher-tier mobs have better odds!
+- **Randomized Slots**: Items inside the bundles are scattered across a 27-slot grid, just like treasure chests.
+- **Classic UI**: Uses the familiar Minecraft container interface for a seamless feel.
+- **Take-Only Mechanics**: Once loot is generated, you can only take items out; you can't put them back in!
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+## Links
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+- **GitHub Repository**: [yigit-guven/Loots](https://github.com/yigit-guven/Loots)
+- **Issue Tracker**: [Report Bugs](https://github.com/yigit-guven/Loots/issues)
+- **Wiki**: [Learn More](https://github.com/yigit-guven/Loots/wiki)
+- **Discord**: [Join our Community](https://discord.gg/gNajXYku5z)
+- **CurseForge**: [Download on CurseForge](https://www.curseforge.com/minecraft/mc-mods/loots)
+- **Modrinth**: [Download on Modrinth](https://modrinth.com/mod/loots)
+
+## License
+
+This project is licensed under the **GNU General Public License v3.0**. See the [LICENSE](LICENSE) file for more details.
+
+## Author
+
+Created by [yigit-guven](https://github.com/yigit-guven).

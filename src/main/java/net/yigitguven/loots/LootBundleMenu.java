@@ -32,18 +32,19 @@ public class LootBundleMenu extends AbstractContainerMenu {
                 slotCount++;
         }
 
-        // We'll use a fixed size container for simplicity in UI, or dynamic based on
-        // bundle size.
-        // Bundles are traditionally 64 weight, but our loot tables might have fewer
-        // items.
-        // Let's use 9 slots (one row) for now as a default for loot boxes.
-        this.container = new SimpleContainer(Math.max(9, slotCount));
+        // Expanded to 27 slots (3 rows of 9)
+        this.container = new SimpleContainer(27);
 
         if (contents != null) {
+            java.util.List<Integer> availableSlots = new java.util.ArrayList<>();
+            for (int i = 0; i < 27; i++)
+                availableSlots.add(i);
+            java.util.Collections.shuffle(availableSlots);
+
             int i = 0;
             for (ItemStack s : contents.items()) {
-                if (i < container.getContainerSize()) {
-                    container.setItem(i++, s.copy());
+                if (i < availableSlots.size()) {
+                    container.setItem(availableSlots.get(i++), s.copy());
                 }
             }
         }
@@ -65,26 +66,28 @@ public class LootBundleMenu extends AbstractContainerMenu {
             }
         });
 
-        // Add bundle slots (Take-only)
-        for (int i = 0; i < 9; i++) {
-            this.addSlot(new Slot(container, i, 8 + i * 18, 18) {
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    return false; // TAKE ONLY
-                }
-            });
-        }
-
-        // Add player inventory
+        // Add bundle slots (Take-only, 3 rows)
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 50 + row * 18));
+                this.addSlot(new Slot(container, col + row * 9, 8 + col * 18, 18 + row * 18) {
+                    @Override
+                    public boolean mayPlace(ItemStack stack) {
+                        return false; // TAKE ONLY
+                    }
+                });
+            }
+        }
+
+        // Add player inventory (Shifted down for 3 rows of loot)
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 9; col++) {
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 86 + row * 18));
             }
         }
 
         // Add player hotbar
         for (int col = 0; col < 9; col++) {
-            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 108));
+            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 144));
         }
     }
 
@@ -95,8 +98,8 @@ public class LootBundleMenu extends AbstractContainerMenu {
         if (slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
-            if (index < 9) { // From bundle to player
-                if (!this.moveItemStackTo(itemstack1, 9, 45, true)) {
+            if (index < 27) { // From bundle to player
+                if (!this.moveItemStackTo(itemstack1, 27, 27 + 36, true)) {
                     return ItemStack.EMPTY;
                 }
             } else { // From player to bundle (BLOCKED)

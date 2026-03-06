@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class LootBundleScreen extends AbstractContainerScreen<LootBundleMenu> {
     private static final ResourceLocation GUI_TEXTURE = ResourceLocation
             .withDefaultNamespace("textures/gui/container/generic_54.png");
-    private static final int ROWS = 1;
+    private static final int ROWS = 3;
 
     public LootBundleScreen(LootBundleMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);

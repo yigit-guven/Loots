@@ -3,29 +3,29 @@
     "pools": [
         {
             "rolls": {
-                "min": 2,
-                "max": 5
+                "min": 5,
+                "max": 8
             },
             "entries": [
                 {
                     "type": "minecraft:item",
-                    "name": "minecraft:diamond",
+                    "name": "minecraft:netherite_ingot",
                     "weight": 5
                 },
                 {
                     "type": "minecraft:item",
-                    "name": "minecraft:emerald",
-                    "weight": 10
+                    "name": "minecraft:netherite_block",
+                    "weight": 1
                 },
                 {
                     "type": "minecraft:item",
-                    "name": "minecraft:gold_block",
-                    "weight": 2
+                    "name": "minecraft:totem_of_undying",
+                    "weight": 5
                 },
                 {
                     "type": "minecraft:item",
-                    "name": "minecraft:experience_bottle",
-                    "weight": 15
+                    "name": "minecraft:elytra",
+                    "weight": 1
                 }
             ]
         }

@@ -46,6 +46,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
+import net.minecraft.resources.ResourceLocation;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(Loots.MODID)
@@ -143,12 +144,12 @@ public class Loots {
         // Register our mod's ModConfigSpec so that FML can create and load the config
         // file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        LOGGER.info("Loots mod initialized and registered to NeoForge EVENT_BUS");
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
         // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
-
         if (Config.LOG_DIRT_BLOCK.getAsBoolean()) {
             LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
         }
@@ -169,12 +170,15 @@ public class Loots {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
     }
 
     @SubscribeEvent
     public void onLivingDrops(LivingDropsEvent event) {
-        if (!(event.getSource().getDirectEntity() instanceof Player player)) {
+        LOGGER.info("LivingDropsEvent fired for entity: {}", event.getEntity().getName().getString());
+
+        // Use getEntity() instead of getDirectEntity() to handle projectiles/arrows
+        if (!(event.getSource().getEntity() instanceof Player player)) {
+            LOGGER.info("Drop skipped: Killer is not a player (Direct or Projectile)");
             return;
         }
 
@@ -185,8 +189,11 @@ public class Loots {
 
         // Only drop for Monsters (hostile mobs)
         if (!(event.getEntity() instanceof net.minecraft.world.entity.monster.Monster monster)) {
+            LOGGER.info("Drop skipped: Entity is not a monster");
             return;
         }
+
+        LOGGER.info("Hostile mob killed: {}", monster.getName().getString());
 
         float maxHealth = monster.getMaxHealth();
         float roll = level.random.nextFloat();
@@ -225,6 +232,8 @@ public class Loots {
                 selectedRarity = LootRarity.COMMON; // Increased from 10% to 20% total for common
         }
 
+        LOGGER.info("Mob health: {}, Roll: {}, Selected Rarity: {}", maxHealth, roll, selectedRarity);
+
         if (selectedRarity == null)
             return;
 
@@ -239,26 +248,40 @@ public class Loots {
         ServerLevel serverLevel = (ServerLevel) level;
 
         List<ItemStack> loot = generateLoot(serverLevel, selectedRarity, event.getEntity(), event.getSource(), player);
+        LOGGER.info("Generated loot size: {}", loot.size());
         if (!loot.isEmpty()) {
             bundleStack.set(DataComponents.BUNDLE_CONTENTS, new BundleContents(loot));
             event.getDrops().add(new ItemEntity(level,
                     event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), bundleStack));
+            LOGGER.info("Loot bundle added to drops!");
         }
     }
 
     public static List<ItemStack> generateLoot(ServerLevel level, LootRarity rarity,
             net.minecraft.world.entity.LivingEntity entity, net.minecraft.world.damagesource.DamageSource source,
             Player player) {
+        ResourceLocation tablePath = rarity.getLootTable();
+        LOGGER.info("Attempting to load loot table: {}", tablePath);
+
         LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(
-                ResourceKey.create(Registries.LOOT_TABLE, rarity.getLootTable()));
+                ResourceKey.create(Registries.LOOT_TABLE, tablePath));
+
+        if (lootTable == LootTable.EMPTY) {
+            LOGGER.error("Loot table NOT FOUND or EMPTY: {}", tablePath);
+            return new ArrayList<>();
+        }
 
         LootParams params = new LootParams.Builder(level)
                 .withParameter(LootContextParams.THIS_ENTITY, entity)
                 .withParameter(LootContextParams.ORIGIN, entity.position())
                 .withParameter(LootContextParams.DAMAGE_SOURCE, source)
                 .withOptionalParameter(LootContextParams.ATTACKING_ENTITY, player)
+                .withOptionalParameter(LootContextParams.DIRECT_ATTACKING_ENTITY, player)
+                .withOptionalParameter(LootContextParams.LAST_DAMAGE_PLAYER, player)
                 .create(LootContextParamSets.ENTITY);
 
-        return lootTable.getRandomItems(params);
+        List<ItemStack> items = lootTable.getRandomItems(params);
+        LOGGER.info("Loot table {} generated {} items", tablePath, items.size());
+        return items;
     }
 }

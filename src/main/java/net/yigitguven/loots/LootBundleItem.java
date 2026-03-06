@@ -77,9 +77,11 @@ public class LootBundleItem extends BundleItem {
         if (!level.isClientSide) {
             BundleContents contents = itemstack.get(DataComponents.BUNDLE_CONTENTS);
             if (contents == null || !contents.items().iterator().hasNext()) {
+                Loots.LOGGER.info("Pouch is empty, auto-generating loot for rarity: {}", rarity);
                 // Auto-generate loot if empty
                 var loot = Loots.generateLoot((net.minecraft.server.level.ServerLevel) level, rarity, player,
                         player.damageSources().generic(), player);
+                Loots.LOGGER.info("Auto-generated loot size: {}", loot.size());
                 if (!loot.isEmpty()) {
                     itemstack.set(DataComponents.BUNDLE_CONTENTS, new BundleContents(loot));
                 }
